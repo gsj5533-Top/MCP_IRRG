@@ -1,0 +1,51 @@
+# MCP Server 配置文件
+
+# 知识查询配置
+knowledge_query:
+  Irrg_data_path: "./data/灌溉知识"  # 灌溉知识查询路径
+  fallback_message: "没有检索到相关知识"
+
+# 知识库设置
+knowledge_base:
+  collect_path: "./data"  # 知识库根目录
+  collect_schedule: "0 2 * * *"  # 每天凌晨2点进行收集
+  auto_discover: true  # 启用自动发现知识类型
+  base_types:  # 基础知识类型（用于未匹配到具体类型时）
+    - general  # 通用知识
+  type_mapping:  # 文件夹名称到知识类型的映射
+    "灌区知识库": "district"      # 灌区通用知识
+    "灌溉知识": "irrigation"      # 灌溉专业知识
+    "作物知识": "crop"           # 作物相关知识
+    "天气知识": "weather"        # 天气相关知识
+    "设备知识": "equipment"      # 设备相关知识
+
+# 向量数据库
+vector_db:
+  type: chroma
+  embedding_model: nomic-embed-text  # 确认此项存在且正确
+  chroma:
+    persist_directory: "./chroma_db"  # 使用正斜杠（推荐，跨平台兼容）
+    # 或使用双反斜杠：persist_directory: ".\\chroma_db"
+    # host: "localhost"
+    # port: 8000
+
+# 大模型设置
+ollama_api_url: "http://localhost:11434"
+ollama_model: "deepseek-r1:7b"
+
+# PostgreSQL配置
+pgsql:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: 123456
+  database: postgres
+
+# 天气API
+weather_api_key: "80ea3f3903efe0b9a37781448a91aa5c"
+weather_api_base_url: "https://api.openweathermap.org/data/2.5/"
+
+# 添加agent配置
+agent_config:
+  enabled_agents: ['irrigation', 'weather', 'knowledge']  # 启用的agents
+  default_agent: 'decision'  # 默认决策agent

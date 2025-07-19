@@ -1,0 +1,42 @@
+# 提示词模板配置（5个核心功能模块）
+# 使用说明：每个功能模块为独立配置，可根据需求选择性启用
+prompts:
+  # 1. 文档处理模块
+  document_processing:
+    default: "处理以下文档内容，提取关键信息并结构化：{document_content}"
+    embedding: "为文档生成向量嵌入前的预处理：{document_content}"
+    chunking: "将文档分块，确保语义完整性：{document_content}"
+
+  # 2. 意图分类模块
+  intent_classification:
+    default: "从以下意图中选择最匹配用户查询的选项，只能返回列表中的精确名称，不要添加任何额外内容或解释：{intents}\n用户查询：{user_query}\n输出格式：仅返回意图名称"
+  knowledge_summary:
+    default: "基于以下上下文回答问题：\n{context}\n问题：{question}\n简洁明了地回答，不要添加额外信息。"
+    irrigation_knowledge: "作为农业灌溉专家，基于以下文档内容回答问题：\n{context}\n问题：{question}\n请包含：1. 灌溉周期 2. 灌溉量 3. 生长期注意事项 4. 特殊天气应对措施。"
+    irrigation_system: "作为灌区系统专家，基于以下文档内容回答问题：\n{context}\n问题：{question}\n请包含：1. 系统功能模块 2. 技术实现要求 3. 操作流程 4. 相关文档参考。"
+    knowledge_query:
+      default: "根据提供的上下文信息，回答以下问题：{question}\n\n上下文：{context}"
+      technical: "作为灌溉领域专家，基于技术文档内容回答问题：{question}\n\n技术文档：{context}"
+    summary: "总结以下内容中关于{topic}的关键信息：{context}"
+
+  # 5. 天气分析模块（原weather_analysis）
+  weather_analysis:
+    default: "分析天气数据并提供农业相关解读：{weather_data}"
+    forecast: "基于天气预报{forecast_data}预测未来7天灌溉需求"
+    historical: "分析历史天气数据{historical_data}，识别气候模式"
+
+  # 6. 自我介绍模块
+  self_introduction:
+    default: "我是灌区知识专家，能够帮你回答灌区管理系统的问题。你可以随时询问关于灌区规划、灌溉决策、灌区管理平台等方面的问题，我会根据知识库为你提供专业解答。"
+
+  # 添加决策相关提示词
+  decision_making:
+    description: 用于基于天气和知识库信息进行决策的提示词模板
+    template: |
+      一名
+      一名灌溉领域专家，请基于以下信息回答用户问题并提供决策建议：
+      1. 用户问题: {question}
+      2. 当前天气: {weather_info}
+      3. 专业知识: {knowledge_info}
+      
+      请给出具体、可操作的建议，并说明决策依据。
